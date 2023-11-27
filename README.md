@@ -1,1 +1,1 @@
-## Titre 2 iut_sd3_accidents
+## iut_sd3_accidents
