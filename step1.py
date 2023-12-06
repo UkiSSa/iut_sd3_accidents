@@ -1,18 +1,15 @@
 import pandas as pd
 
-# Charger les fichiers CSV dans des DataFrames
-carac_df = pd.read_csv('carac.csv', encoding='latin1')
-lieux_df = pd.read_csv('lieux.csv', encoding='latin1')
-veh_df = pd.read_csv('veh.csv', encoding='latin1')
-vict_df = pd.read_csv('vict.csv', encoding='latin1')
 
-# Fusionner les DataFrames en utilisant les colonnes appropriées
-merged_df = pd.merge(carac_df, lieux_df, on='Num_Acc', how='inner')
-merged_df = pd.merge(merged_df, veh_df, on='Num_Acc', how='inner')
-merged_df = pd.merge(merged_df, vict_df, on='Num_Acc', how='inner')
+carac = pd.read_csv("data/carac.csv", sep=";")
+lieux = pd.read_csv("data/lieux.csv", sep=";", low_memory=False)
+veh = pd.read_csv("data/veh.csv", sep=";")
+vict = pd.read_csv("data/vict.csv", sep=";")
 
-# Enregistrez le DataFrame fusionné dans un nouveau fichier CSV
-merged_df.to_csv('merged_data.csv', index=False, encoding='utf-8')
 
-print("Fusion terminée. Le fichier merged_data.csv a été créé.")
+victime = vict.merge(veh, on=["Num_Acc", "num_veh"])
+accident = carac.merge(lieux, on="Num_Acc")
+victime = victime.merge(accident, on="Num_Acc")
 
+# Merger les dataframes dans un dataframe merged_data.csv
+victime.to_csv("step1/merged_data.csv", index=False)
